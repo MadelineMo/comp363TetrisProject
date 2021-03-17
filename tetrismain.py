@@ -3,6 +3,6 @@ import pdb
 
 import random
 import math
-import block
-import constants
+import pieces
+import cons
 
