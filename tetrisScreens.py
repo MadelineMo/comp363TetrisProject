@@ -90,7 +90,7 @@ def player_screen():
 
 
 def game_screen():
-    while True:
+    '''while True:
         image = pygame.image.load('resources/TetrisGameScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
@@ -126,15 +126,10 @@ def game_screen():
                     sys.exit()
             if event.type == MOUSEBUTTONDOWN:  # if mouse clicked, click is true
                 if event.button == 1:
-                    click = True
-
-        game_start()
-        pygame.display.update()  # update screen
-
-def game_start():
+                    click = True'''
     tetris = tetrismain.TetrisGame()
     tetris.run()
-
+    pygame.display.update()  # update screen
 
 def name_screen():
     while True:

@@ -1,5 +1,6 @@
 import pygame
 import sys
+#import tetrisScreens
 from random import randrange as rand
 
 #Board configuration and block size (which can be changed to create different board dimensions: default is a square board 25x25)
@@ -241,8 +242,9 @@ class TetrisGame(object):
         self.paused = not self.paused
 
     #create function to quit the game
+    '''I will make this function open a separate window'''
     def quit(self):
-        self.center_msg("Ending the game!")
+        self.center_msg("Are you sure you want to quit?")
         pygame.display.update()
         sys.exit()
 
@@ -313,22 +315,22 @@ class TetrisGame(object):
                 else:
                     #IF NOT GAMEOVER/PAUSE
                     pygame.draw.line(self.screen,
-                        (255,255,255),
-                        (self.rowlim+1, 0),
+                        (251,245,118),
+                        (self.rowlim+1, 237),
                         (self.rowlim+1, self.height-1))
                     self.disp_msg("Next:", (
-                        self.rowlim+blocksize,
-                        3))
+                        self.rowlim+blocksize+1,
+                        280))
                     self.disp_msg("\n Score: %d"
                         % (self.score),
-                        (self.rowlim+blocksize, blocksize*5))
+                        (self.rowlim+blocksize, 410))
 
                     self.draw_matrix(self.bground_grid, (0,8))
                     self.draw_matrix(self.board, (0,8))
                     self.draw_matrix(self.piece,
                         (self.piece_x, self.piece_y))
                     self.draw_matrix(self.next_piece,
-                        (columnnum+1,2))
+                        (columnnum+1.5,11))
             pygame.display.update()
 
             #create movements for the various key events (pause, up, down, quit, etc)
@@ -337,7 +339,9 @@ class TetrisGame(object):
                 if event.type == pygame.USEREVENT+1:
                     self.drop(False)
                 elif event.type == pygame.QUIT:
-                    self.quit()
+                    #self.quit()
+                    pygame.quit()
+                    sys.exit()
                 elif event.type == pygame.KEYDOWN:
                     for key in keyslist:
                         if event.key == eval("pygame.K_"
