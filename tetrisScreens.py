@@ -2,14 +2,12 @@ import pygame
 import sys
 from pygame.locals import *
 
-
 screen = pygame.display.set_mode((800, 951), 0, 0, 0,  32)
 player_mode = 0
 
-
 def home_screen():
     while True:
-        image = pygame.image.load('TetrisHomeScreen.png')  # get home screen background
+        image = pygame.image.load('imager/TetrisHomeScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
 
@@ -17,39 +15,16 @@ def home_screen():
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_SPACE:  # if space pressed, go to game screen
-                    game_screen()
+                    player_screen()
                 if event.key == K_ESCAPE:  # if escape pressed, exit window
                     pygame.quit()
                     sys.exit()
-            if event.type == MOUSEBUTTONDOWN:  # if mouse clicked, click is true
-                if event.button == 1:
-                    click = True
 
         pygame.display.update()
 
 
 def player_screen():
     while True:  # stand in
-        image = pygame.image.load('TetrisPlayerScreen.png')  # get player screen background
-        image = pygame.transform.scale(image, (800, 951))  # resize image
-        screen.blit(image, (0, 0))  # paste image on screen
-
-        mx, my = pygame.mouse.get_pos()  # get mouse point
-
-        player_button_1 = pygame.Rect((25, 727, 304, 82))
-        player_button_2 = pygame.Rect((439, 727, 328, 82))
-        if player_button_1.collidepoint((mx, my)):  # if button clicked, go to game screen
-            if click:
-                player_mode = 1  # single player mode
-                game_screen()
-        if player_button_2.collidepoint((mx, my)):  # if button clicked, go to game screen
-            if click:
-                player_mode = 2  # two player mode
-                game_screen()
-
-        pygame.draw.rect(screen, (153, 73, 255), player_button_1)  # draw player one button
-        pygame.draw.rect(screen, (153, 73, 255), player_button_2)  # draw player one button
-
         click = False  # get rid of space, add type == QUIT, copy to all others
         # exit game
         for event in pygame.event.get():
@@ -61,12 +36,48 @@ def player_screen():
                 if event.button == 1:
                     click = True
 
+        image = pygame.image.load('imager/TetrisPlayerScreen.png')  # get player screen background
+        image = pygame.transform.scale(image, (800, 951))  # resize image
+        screen.blit(image, (0, 0))  # paste background on screen
+
+        mx, my = pygame.mouse.get_pos()  # get mouse point
+
+        player_button_1 = pygame.Rect((25, 727, 304, 82))
+        player_button_2 = pygame.Rect((439, 727, 328, 82))
+        leader_button = pygame.Rect((239, 844, 328, 82))
+        if player_button_1.collidepoint((mx, my)):  # if button clicked, go to game screen
+            if click:
+                player_mode = 1  # single player mode
+                game_screen()
+        if player_button_2.collidepoint((mx, my)):  # if button clicked, go to game screen
+            if click:
+                player_mode = 2  # two player mode
+                game_screen()
+        if leader_button.collidepoint((mx, my)):
+            if click:
+                leader_screen()
+        pygame.draw.rect(screen, (22, 29, 72), player_button_1)  # draw player one button
+        pygame.draw.rect(screen, (22, 29, 72), player_button_2)  # draw player one button
+        pygame.draw.rect(screen, (22, 29, 72), leader_button)  # draw leader button
+
+        player_one_button = pygame.image.load('imager/OnePlayerButton.png')  # overlay button image
+        player_one_button = pygame.transform.scale(player_one_button, (328, 82))
+        screen.blit(player_one_button, (25, 727))
+
+        player_two_button = pygame.image.load('imager/TwoPlayerButton.png')  # overlay button image
+        player_two_button = pygame.transform.scale(player_two_button, (328, 82))
+        screen.blit(player_two_button, (439, 727))
+
+        leader_button_image = pygame.image.load('imager/LeaderButton.png')  # overlay button image
+        leader_button_image = pygame.transform.scale(leader_button_image, (328, 82))
+        screen.blit(leader_button_image, (239, 844))
+
         pygame.display.update()
 
 
 def game_screen():
     while True:
-        image = pygame.image.load('TetrisGameScreen.png')  # get home screen background
+        image = pygame.image.load('imager/TetrisGameScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
 
@@ -82,9 +93,16 @@ def game_screen():
             if click:
                 name_screen()
 
-        pygame.draw.rect(screen, (153, 73, 255), skip_button)  # draw skip button
-        pygame.draw.rect(screen, (37, 45, 246), end_button)  # draw end button
+        pygame.draw.rect(screen, (22, 29, 72), skip_button)  # draw skip button
+        pygame.draw.rect(screen, (22, 29, 72), end_button)  # draw end button
 
+        skip_button = pygame.image.load('imager/SkipButton.png')  # overlay button image
+        skip_button = pygame.transform.scale(skip_button, (171, 65))
+        screen.blit(skip_button, (620, 730))
+
+        end_button = pygame.image.load('imager/EndButton.png')  # overlay button image
+        end_button = pygame.transform.scale(end_button, (171, 65))
+        screen.blit(end_button, (620, 827))
 
         click = False
         for event in pygame.event.get():
@@ -100,7 +118,7 @@ def game_screen():
 
 def name_screen():
     while True:
-        image = pygame.image.load('TetrisNameScreen.png')  # get home screen background
+        image = pygame.image.load('imager/TetrisNameScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
 
@@ -111,7 +129,11 @@ def name_screen():
             if click:
                 leader_screen()
 
-        pygame.draw.rect(screen, (37, 45, 246), submit_button)
+        pygame.draw.rect(screen, (22, 29, 72), submit_button)
+
+        button = pygame.image.load('imager/SubmitButton.png')  # overlay button image
+        button = pygame.transform.scale(button, (328, 82))
+        screen.blit(button, (258, 735))
 
         click = False
         for event in pygame.event.get():
@@ -127,7 +149,7 @@ def name_screen():
 
 def leader_screen():
     while True:
-        image = pygame.image.load('TetrisLeaderboardScreen.png')  # get home screen background
+        image = pygame.image.load('imager/TetrisLeaderboardScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
 
@@ -135,12 +157,7 @@ def leader_screen():
 
         exit_button = pygame.Rect((300, 867, 196, 59))
 
-        if exit_button.collidepoint((mx, my)):  # if button clicked, go to game screen
-            if click:
-                credit_screen()
-
-        pygame.draw.rect(screen, (37, 45, 246), exit_button)  # draw exit button
-
+        # for some reason, this one decided to need to be different
         click = False
         for event in pygame.event.get():
             if event.type == KEYDOWN:
@@ -150,12 +167,24 @@ def leader_screen():
             if event.type == MOUSEBUTTONDOWN:  # if mouse clicked, click is true
                 if event.button == 1:
                     click = True
+
+        if exit_button.collidepoint((mx, my)):  # if button clicked, go to game screen
+            if click:
+                credit_screen()
+
+        pygame.draw.rect(screen, (22, 29, 72), exit_button)  # draw exit button
+
+        button = pygame.image.load('imager/ExitButton.png')  # overlay button image
+        button = pygame.transform.scale(button, (196, 59))
+        screen.blit(button, (300, 867))
+
+
         pygame.display.update()  # update screen
 
 
 def credit_screen():
     while True:
-        image = pygame.image.load('TetrisCreditsScreen.png')  # get home screen background
+        image = pygame.image.load('imager/TetrisCreditsScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
 
@@ -171,8 +200,16 @@ def credit_screen():
             if click:
                 home_screen()
 
-        pygame.draw.rect(screen, (153, 73, 255), rematch_button)  # draw rematch button
-        pygame.draw.rect(screen, (37, 45, 246), home_button)  # draw player one button
+        pygame.draw.rect(screen, (22, 29, 72), rematch_button)  # draw rematch button
+        pygame.draw.rect(screen, (22, 29, 72), home_button)  # draw player one button
+
+        rematch_button_image = pygame.image.load('imager/RematchButton.png')  # overlay button image
+        rematch_button_image = pygame.transform.scale(rematch_button_image, (328, 82))
+        screen.blit(rematch_button_image, (233, 665))
+
+        home_button_image = pygame.image.load('imager/HomeButton.png')  # overlay button image
+        home_button_image = pygame.transform.scale(home_button_image, (328, 82))
+        screen.blit(home_button_image, (236, 777))
 
         click = False
         for event in pygame.event.get():
