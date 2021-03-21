@@ -4,8 +4,8 @@ from random import randrange as rand
 
 #Board configuration and block size (which can be changed to create different board dimensions: default is a square board 25x25)
 blocksize = 30
-columnnum = 25
-rownum = 25
+columnnum = 20
+rownum = 24
 maxfps = 60
 
 #create a list of the colors (using the RBG color system)
@@ -86,15 +86,17 @@ def rotate_clockwise(piece):
     ]
 
 
-#use this class to run the Tetris game 
+#use this class to run the Tetris game
 class TetrisGame(object):
     #start by initializing the game as well as the width, height, background
     #grid, font size, and screen
     def __init__(self):
         pygame.init()
         pygame.key.set_repeat(250,25)
-        self.width = blocksize*(columnnum+6)
-        self.height = blocksize*rownum
+        #self.width = blocksize*(columnnum+6)
+        self.width = 800
+        #self.height = blocksize*rownum
+        self.height = 951
         self.rowlim = blocksize*columnnum
         self.bground_grid = [[ 8 if x%2==y%2 else 0
                                for x in range(columnnum)] for y in range(rownum)]
@@ -113,7 +115,7 @@ class TetrisGame(object):
         self.piece = self.next_piece[:]
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
         self.piece_x = int(columnnum / 2 - len(self.piece[0])/2)
-        self.piece_y = 0
+        self.piece_y = 8
 
         if check_collision(self.board,
                            self.piece,
@@ -173,7 +175,7 @@ class TetrisGame(object):
                             blocksize,
                             blocksize),0)
 
-    
+
     def add_cl_lines(self, n):
         linescores = [0, 40, 100, 300, 1200]
         self.lines += n
@@ -238,7 +240,7 @@ class TetrisGame(object):
     def toggle_pause(self):
         self.paused = not self.paused
 
-    #create function to quit the game 
+    #create function to quit the game
     def quit(self):
         self.center_msg("Ending the game!")
         pygame.display.update()
@@ -257,10 +259,10 @@ class TetrisGame(object):
         #p, escape, return, and space (and their coordinate code calls)
         keyslist = {
             'SPACE':    self.start_game,
-            'LEFT':     lambda:self.move(-1), #moving left is negative
-            'RIGHT':    lambda:self.move(+1),
-            'UP':       self.rotate_piece,
-            'DOWN':     lambda:self.drop(True),
+            'a':     lambda:self.move(-1), #moving left is negative
+            'd':    lambda:self.move(+1),
+            'w':       self.rotate_piece,
+            's':     lambda:self.drop(True),
             'p':        self.toggle_pause,
             'ESCAPE':   self.quit,
             'RETURN':   self.insta_drop
@@ -272,7 +274,34 @@ class TetrisGame(object):
 
         clocktime = pygame.time.Clock()
         while 1:
-            self.screen.fill((0,0,0))
+            image = pygame.image.load('resources/TetrisGameScreen.png')  # get home screen background
+            image = pygame.transform.scale(image, (800, 951))  # resize image
+            self.screen.blit(image, (0, 0))
+
+            mx, my = pygame.mouse.get_pos()  # get mouse point
+
+            self.skip_button = pygame.Rect((620, 730, 171, 65))
+            self.end_button = pygame.Rect((620, 827, 171, 65))
+            if self.skip_button.collidepoint((mx, my)):  # if button clicked, go to game screen
+                if self.click:
+                    pass  # to be added in double player
+            if self.end_button.collidepoint((mx, my)):  # if button clicked, go to game screen
+                if self.click:
+                    #tetrisScreens.name_screen()
+                    pass
+
+            pygame.draw.rect(self.screen, (22, 29, 72), self.skip_button)  # draw skip button
+            pygame.draw.rect(self.screen, (22, 29, 72), self.end_button)  # draw end button
+
+            self.skip_button = pygame.image.load('resources/SkipButton.png')  # overlay button image
+            self.skip_button = pygame.transform.scale(self.skip_button, (171, 65))
+            self.screen.blit(self.skip_button, (620, 730))
+
+            self.end_button = pygame.image.load('resources/EndButton.png')  # overlay button image
+            self.end_button = pygame.transform.scale(self.end_button, (171, 65))
+            self.screen.blit(self.end_button, (620, 827))
+
+
             #GAMEOVER
             if self.gameover:
                 self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
@@ -293,9 +322,9 @@ class TetrisGame(object):
                     self.disp_msg("\n Score: %d"
                         % (self.score),
                         (self.rowlim+blocksize, blocksize*5))
-                    
-                    self.draw_matrix(self.bground_grid, (0,0))
-                    self.draw_matrix(self.board, (0,0))
+
+                    self.draw_matrix(self.bground_grid, (0,8))
+                    self.draw_matrix(self.board, (0,8))
                     self.draw_matrix(self.piece,
                         (self.piece_x, self.piece_y))
                     self.draw_matrix(self.next_piece,
@@ -303,6 +332,7 @@ class TetrisGame(object):
             pygame.display.update()
 
             #create movements for the various key events (pause, up, down, quit, etc)
+            self.click = False
             for event in pygame.event.get():
                 if event.type == pygame.USEREVENT+1:
                     self.drop(False)
@@ -313,12 +343,12 @@ class TetrisGame(object):
                         if event.key == eval("pygame.K_"
                         +key):
                             keyslist[key]()
+                if event.type == pygame.MOUSEBUTTONDOWN:  # if mouse clicked, click is true
+                    if event.button == 1:
+                        self.click = True
 
             #set the clock to tick with the maxfps given in the beginning
             clocktime.tick(maxfps)
 
 
 #then run the Tetris App in the main screen
-if __name__ == '__main__':
-    tetris = TetrisGame()
-    tetris.run()
