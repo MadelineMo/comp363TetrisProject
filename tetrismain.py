@@ -1,6 +1,5 @@
 import pygame
 import sys
-#import tetrisScreens
 from random import randrange as rand
 
 #Board configuration and block size (which can be changed to create different board dimensions: default is a square board 25x25)
@@ -91,7 +90,7 @@ def rotate_clockwise(piece):
 class TetrisGame(object):
     #start by initializing the game as well as the width, height, background
     #grid, font size, and screen
-    def __init__(self):
+    def __init__(self, mainscreens):
         pygame.init()
         pygame.key.set_repeat(250,25)
         #self.width = blocksize*(columnnum+6)
@@ -106,6 +105,7 @@ class TetrisGame(object):
             pygame.font.get_default_font(), 25)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
+        self.mainscreens = mainscreens
         pygame.event.set_blocked(pygame.MOUSEMOTION)
         #when choosing the piece, make it a random choice
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
@@ -289,7 +289,7 @@ class TetrisGame(object):
                     pass  # to be added in double player
             if self.end_button.collidepoint((mx, my)):  # if button clicked, go to game screen
                 if self.click:
-                    #tetrisScreens.name_screen()
+                    self.mainscreens.name_screen()
                     pass
 
             pygame.draw.rect(self.screen, (22, 29, 72), self.skip_button)  # draw skip button
@@ -306,8 +306,10 @@ class TetrisGame(object):
 
             #GAMEOVER
             if self.gameover:
-                self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
-                                % self.score)
+                '''self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
+                                % self.score)'''
+                break
+
             else:
                 #PAUSE
                 if self.paused:

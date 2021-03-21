@@ -5,8 +5,7 @@ import tetrismain
 
 song = "resources/general.mp3"
 icon = "resources/icon.png"
-programIcon = pygame.image.load(icon)
-pygame.display.set_icon(programIcon)
+tetris = tetrismain.TetrisGame()
 screen = pygame.display.set_mode((800, 951), 0, 0, 0,  32)
 player_mode = 0
 
@@ -17,6 +16,9 @@ def home_screen():
         image = pygame.image.load('resources/TetrisHomeScreen.png')  # get home screen background
         image = pygame.transform.scale(image, (800, 951))  # resize image
         screen.blit(image, (0, 0))  # paste image on screen
+
+        programIcon = pygame.image.load(icon)
+        pygame.display.set_icon(programIcon)
 
         # exit game
         for event in pygame.event.get():
@@ -127,7 +129,6 @@ def game_screen():
             if event.type == MOUSEBUTTONDOWN:  # if mouse clicked, click is true
                 if event.button == 1:
                     click = True'''
-    tetris = tetrismain.TetrisGame()
     tetris.run()
     pygame.display.update()  # update screen
 
