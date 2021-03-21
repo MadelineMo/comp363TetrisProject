@@ -18,7 +18,7 @@ colors = [
 (50,  120, 52 ), #dark green
 (44, 177, 238 ), #blue
 (120, 108, 245), #purple
-(35, 35, 35) #dark grey (used for the background)
+(1, 5, 28) #dark grey (used for the background)
 ]
 
 # Define the shapes of the single pieces using "0" for blank spaces in the pieces (T, S, Z, J, L, I, O)
@@ -50,7 +50,7 @@ def new_board():
         [ 0 for x in range(columnnum) ]
         for y in range(rownum)
     ]
-    board += [[ 1 for x in range(columnnum)]]
+    board += [[ 8 for x in range(columnnum)]]
     return board
 
 #create a definition to remove a row from the board
@@ -93,10 +93,12 @@ class TetrisGame(object):
     def __init__(self, mainscreens):
         pygame.init()
         pygame.key.set_repeat(250,25)
-        #self.width = blocksize*(columnnum+6)
+        #self.twidth = blocksize*(columnnum+6)
         self.width = 800
+        self.twidth = blocksize*(columnnum+6)
         #self.height = blocksize*rownum
         self.height = 951
+        self.theight = blocksize*rownum
         self.rowlim = blocksize*columnnum
         self.bground_grid = [[ 8 if x%2==y%2 else 0
                                for x in range(columnnum)] for y in range(rownum)]
@@ -319,7 +321,7 @@ class TetrisGame(object):
                     pygame.draw.line(self.screen,
                         (251,245,118),
                         (self.rowlim+1, 237),
-                        (self.rowlim+1, self.height-1))
+                        (self.rowlim+1, self.height-1), (4))
                     self.disp_msg("Next:", (
                         self.rowlim+blocksize+1,
                         280))
