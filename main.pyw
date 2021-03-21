@@ -48,7 +48,7 @@ class Main():
 
     def player_screen(self):
         while True:  # stand in
-            click = False  # get rid of space, add type == QUIT, copy to all others
+            click = False
             # exit game
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
@@ -98,8 +98,11 @@ class Main():
             leader_button_image = pygame.transform.scale(leader_button_image, (328, 82))
             self.screen.blit(leader_button_image, (239, 844))
 
-            pygame.display.update()
+            out_of_order_image = pygame.image.load('resources/PlayersOutOfOrder.png')  # overlay out of order image
+            out_of_order_image = pygame.transform.scale(out_of_order_image, (344, 484))
+            self.screen.blit(out_of_order_image, (430, 338))
 
+            pygame.display.update()
 
     def game_screen(self):
         self.tetris = tetrismain.TetrisGame(self)
@@ -110,7 +113,7 @@ class Main():
     def name_screen(self):
         click = False
         while True:
-            image = pygame.image.load('resources/TetrisNameScreen.png')  # get home screen background
+            image = pygame.image.load('resources/NamesOutOfOrder.png')  # name screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
             self.screen.blit(image, (0, 0))  # paste image on screen
 
@@ -140,10 +143,9 @@ class Main():
                     sys.exit()
             pygame.display.update()  # update screen
 
-
     def leader_screen(self):
         while True:
-            image = pygame.image.load('resources/TetrisLeaderboardScreen.png')  # get home screen background
+            image = pygame.image.load('resources/LeaderboardOutOfOrder.png')  # get leader screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
             self.screen.blit(image, (0, 0))  # paste image on screen
 
@@ -175,9 +177,7 @@ class Main():
             self.button = pygame.transform.scale(self.button, (196, 59))
             self.screen.blit(self.button, (300, 867))
 
-
             pygame.display.update()  # update screen
-
 
     def credit_screen(self):
         while True:

@@ -305,6 +305,9 @@ class TetrisGame(object):
             self.end_button = pygame.transform.scale(self.end_button, (171, 65))
             self.screen.blit(self.end_button, (620, 827))
 
+            self.out_of_order_skip = pygame.image.load('resources/SkipOutOfOrder.png')
+            self.out_of_order_skip = pygame.transform.scale(self.out_of_order_skip, (180, 113))
+            self.screen.blit(self.out_of_order_skip, (616, 703))
 
             #GAMEOVER
             if self.gameover:
