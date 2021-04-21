@@ -98,10 +98,6 @@ class Main():
             leader_button_image = pygame.transform.scale(leader_button_image, (328, 82))
             self.screen.blit(leader_button_image, (239, 844))
 
-            out_of_order_image = pygame.image.load('resources/PlayersOutOfOrder.png')  # overlay out of order image
-            out_of_order_image = pygame.transform.scale(out_of_order_image, (344, 484))
-            self.screen.blit(out_of_order_image, (430, 338))
-
             pygame.display.update()
 
 
@@ -114,7 +110,7 @@ class Main():
     def name_screen(self):
         click = False
         while True:
-            image = pygame.image.load('resources/NamesOutOfOrder.png')  # name screen (out of order version)
+            image = pygame.image.load('resources/TetrisNameScreen.png')  # name screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
             self.screen.blit(image, (0, 0))  # paste image on screen
 
@@ -147,7 +143,7 @@ class Main():
 
     def leader_screen(self):
         while True:
-            image = pygame.image.load('resources/LeaderboardOutOfOrder.png')  # get leader screen (out of order version)
+            image = pygame.image.load('resources/TetrisLeaderboardScreen.png')  # get leader screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
             self.screen.blit(image, (0, 0))  # paste image on screen
 
