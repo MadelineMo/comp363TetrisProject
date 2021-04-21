@@ -6,8 +6,8 @@ import tetrismain
 class Main():
 
     def __init__(self):
-        self.screen = pygame.display.set_mode((800, 951), 0, 0, 0,  32)
-        self.screen.fill((0, 0, 0))
+        self.screen = pygame.display.set_mode((800, 950), 0, 0, 0,  32)
+        self.screen.fill((22, 29, 72))
         self.song = "resources/general.mp3"
         self.icon = "resources/icon.png"
         self.tetris = tetrismain.TetrisGame(self)
@@ -21,7 +21,6 @@ class Main():
         while True:
 
             image = pygame.image.load('resources/TetrisHomeScreen.png')  # get home screen background
-            image = pygame.transform.scale(image, (800, 951))  # resize image
             self.screen.blit(image, (0, 0))  # paste image on screen
 
             programIcon = pygame.image.load(self.icon)
@@ -62,9 +61,9 @@ class Main():
                     pygame.quit()
                     sys.exit()
 
-            image = pygame.image.load('resources/TetrisPlayerScreen.png')  # get player screen background
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))  # paste background on screen
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
+            self.screen.blit(image, (0, 18))  # paste banner on screen
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -109,9 +108,11 @@ class Main():
     def name_screen(self):
         click = False
         while True:
-            image = pygame.image.load('resources/TetrisNameScreen.png')  # name screen
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))  # paste image on screen
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
+            self.screen.blit(image, (0, 18))  # paste banner on screen
+            image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
+            self.screen.blit(image, (30, 170))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -141,9 +142,9 @@ class Main():
 
     def leader_screen(self):
         while True:
-            image = pygame.image.load('resources/TetrisLeaderboardScreen.png')  # get leader screen
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))  # paste image on screen
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/LeaderboardBanner.png')  # get leader screen
+            self.screen.blit(image, (0, 48))  # paste image on screen
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -177,9 +178,11 @@ class Main():
 
     def credit_screen(self):
         while True:
-            image = pygame.image.load('resources/TetrisCreditsScreen.png')  # get home screen background
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))  # paste image on screen
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
+            self.screen.blit(image, (0, 18))  # paste banner on screen
+            image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
+            self.screen.blit(image, (30, 170))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 

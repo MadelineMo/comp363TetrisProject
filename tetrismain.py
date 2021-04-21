@@ -278,9 +278,9 @@ class TetrisGame(object):
 
         clocktime = pygame.time.Clock()
         while 1:
-            image = pygame.image.load('resources/TetrisGameScreen.png')  # get home screen background
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
+            self.screen.blit(image, (0, 18))  # paste banner on screen
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
