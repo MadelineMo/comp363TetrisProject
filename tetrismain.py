@@ -298,12 +298,10 @@ class TetrisGame(object):
             pygame.draw.rect(self.screen, (22, 29, 72), self.end_button)  # draw end button
 
             self.skip_button = pygame.image.load('resources/SkipButton.png')  # overlay button image
-            self.skip_button = pygame.transform.scale(self.skip_button, (171, 65))
-            self.screen.blit(self.skip_button, (620, 730))
+            self.screen.blit(self.skip_button, (615, 730))
 
             self.end_button = pygame.image.load('resources/EndButton.png')  # overlay button image
-            self.end_button = pygame.transform.scale(self.end_button, (171, 65))
-            self.screen.blit(self.end_button, (620, 827))
+            self.screen.blit(self.end_button, (615, 827))
 
             #GAMEOVER
             if self.gameover:

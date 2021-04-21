@@ -64,6 +64,12 @@ class Main():
             self.screen.fill((22, 29, 72))  # reset background
             image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
             self.screen.blit(image, (0, 18))  # paste banner on screen
+            image = pygame.image.load('resources/PlayersText.png')  # 'how many players?'
+            self.screen.blit(image, (75, 215))
+            image = pygame.image.load('resources/PlayerOneIcon.png')  # one player image
+            self.screen.blit(image, (50, 360))
+            image = pygame.image.load('resources/PlayerTwoIcon.png')  # Two player image
+            self.screen.blit(image, (470, 360))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -86,16 +92,13 @@ class Main():
             pygame.draw.rect(self.screen, (22, 29, 72), self.leader_button)  # draw leader button
 
             self.player_one_button = pygame.image.load('resources/OnePlayerButton.png')  # overlay button image
-            self.player_one_button = pygame.transform.scale(self.player_one_button, (328, 82))
-            self.screen.blit(self.player_one_button, (25, 727))
+            self.screen.blit(self.player_one_button, (30, 730))
 
             self.player_two_button = pygame.image.load('resources/TwoPlayerButton.png')  # overlay button image
-            self.player_two_button = pygame.transform.scale(self.player_two_button, (328, 82))
-            self.screen.blit(self.player_two_button, (439, 727))
+            self.screen.blit(self.player_two_button, (450, 730))
 
             leader_button_image = pygame.image.load('resources/LeaderButton.png')  # overlay button image
-            leader_button_image = pygame.transform.scale(leader_button_image, (328, 82))
-            self.screen.blit(leader_button_image, (239, 844))
+            self.screen.blit(leader_button_image, (240, 840))
 
             pygame.display.update()
 
@@ -113,6 +116,8 @@ class Main():
             self.screen.blit(image, (0, 18))  # paste banner on screen
             image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
             self.screen.blit(image, (30, 170))
+            image = pygame.image.load('resources/SubTitleText.png')  # 'Thanks for playing'
+            self.screen.blit(image, (142.5, 200))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -124,8 +129,7 @@ class Main():
             pygame.draw.rect(self.screen, (22, 29, 72), self.submit_button)
 
             self.button = pygame.image.load('resources/SubmitButton.png')  # overlay button image
-            self.button = pygame.transform.scale(self.button, (328, 82))
-            self.screen.blit(self.button, (258, 735))
+            self.screen.blit(self.button, (240, 750))
 
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
@@ -171,8 +175,7 @@ class Main():
             pygame.draw.rect(self.screen, (22, 29, 72), self.exit_button)  # draw exit button
 
             self.button = pygame.image.load('resources/ExitButton.png')  # overlay button image
-            self.button = pygame.transform.scale(self.button, (196, 59))
-            self.screen.blit(self.button, (300, 867))
+            self.screen.blit(self.button, (240, 824))
 
             pygame.display.update()  # update screen
 
@@ -183,6 +186,8 @@ class Main():
             self.screen.blit(image, (0, 18))  # paste banner on screen
             image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
             self.screen.blit(image, (30, 170))
+            image = pygame.image.load('resources/CreditsText.png')  # credits
+            self.screen.blit(image, (37.5, 190))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -200,12 +205,10 @@ class Main():
             pygame.draw.rect(self.screen, (22, 29, 72), self.home_button)  # draw player one button
 
             rematch_button_image = pygame.image.load('resources/RematchButton.png')  # overlay button image
-            rematch_button_image = pygame.transform.scale(rematch_button_image, (328, 82))
-            self.screen.blit(rematch_button_image, (233, 665))
+            self.screen.blit(rematch_button_image, (240, 652))
 
             home_button_image = pygame.image.load('resources/HomeButton.png')  # overlay button image
-            home_button_image = pygame.transform.scale(home_button_image, (328, 82))
-            self.screen.blit(home_button_image, (236, 777))
+            self.screen.blit(home_button_image, (240, 766))
 
             click = False
             for event in pygame.event.get():
