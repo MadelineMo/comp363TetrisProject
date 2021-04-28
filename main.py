@@ -102,7 +102,10 @@ class Main():
 
 
     def game_screen(self):
-        self.tetris = tetrismain.TetrisGame(self)
+        if self.player_mode == 1:
+            self.tetris = tetrismain.TetrisGame(self)
+        elif self.player_mode == 2:
+            self.tetris = tetrismain.TetrisGame2Player(self)
         self.tetris.run()
         pygame.display.update()
         self.name_screen()  # update screen
