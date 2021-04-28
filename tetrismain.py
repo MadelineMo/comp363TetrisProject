@@ -5,7 +5,7 @@ from random import randrange as rand
 #Board configuration and block size (which can be changed to create different board dimensions: default is a square board 25x25)
 blocksize = 30
 columnnum = 20
-rownum = 24
+rownum = 25
 maxfps = 60
 
 #create a list of the colors (using the RBG color system)
@@ -50,7 +50,7 @@ def new_board():
         [ 0 for x in range(columnnum) ]
         for y in range(rownum)
     ]
-    board += [[ 8 for x in range(columnnum)]]
+    board += [[ 1 for x in range(columnnum)]]
     return board
 
 #create a definition to remove a row from the board
@@ -93,12 +93,9 @@ class TetrisGame(object):
     def __init__(self, mainscreens):
         pygame.init()
         pygame.key.set_repeat(250,25)
-        #self.twidth = blocksize*(columnnum+6)
         self.width = 800
-        self.twidth = blocksize*(columnnum+6)
-        #self.height = blocksize*rownum
         self.height = 951
-        self.theight = blocksize*rownum
+        self.mainscreens = mainscreens
         self.rowlim = blocksize*columnnum
         self.bground_grid = [[ 8 if x%2==y%2 else 0
                                for x in range(columnnum)] for y in range(rownum)]
@@ -107,7 +104,6 @@ class TetrisGame(object):
             pygame.font.get_default_font(), 25)
 
         self.screen = pygame.display.set_mode((self.width, self.height))
-        self.mainscreens = mainscreens
         pygame.event.set_blocked(pygame.MOUSEMOTION)
         #when choosing the piece, make it a random choice
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
@@ -118,7 +114,7 @@ class TetrisGame(object):
         self.piece = self.next_piece[:]
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
         self.piece_x = int(columnnum / 2 - len(self.piece[0])/2)
-        self.piece_y = 8
+        self.piece_y = 0
 
         if check_collision(self.board,
                            self.piece,
@@ -244,9 +240,8 @@ class TetrisGame(object):
         self.paused = not self.paused
 
     #create function to quit the game
-    '''I will make this function open a separate window'''
     def quit(self):
-        self.center_msg("Are you sure you want to quit?")
+        self.center_msg("Ending the game!")
         pygame.display.update()
         sys.exit()
 
@@ -263,10 +258,14 @@ class TetrisGame(object):
         #p, escape, return, and space (and their coordinate code calls)
         keyslist = {
             'SPACE':    self.start_game,
-            'a':     lambda:self.move(-1), #moving left is negative
-            'd':    lambda:self.move(+1),
-            'w':       self.rotate_piece,
-            's':     lambda:self.drop(True),
+            'LEFT':     lambda:self.move(-1), #moving left is negative
+            'RIGHT':    lambda:self.move(+1),
+            'UP':       self.rotate_piece,
+            'DOWN':     lambda:self.drop(True),
+            'a': lambda: self.move(-1),  # moving left is negative
+            'd': lambda: self.move(+1),
+            'w': self.rotate_piece,
+            's': lambda: self.drop(True),
             'p':        self.toggle_pause,
             'ESCAPE':   self.quit,
             'RETURN':   self.insta_drop
@@ -278,11 +277,11 @@ class TetrisGame(object):
 
         clocktime = pygame.time.Clock()
         while 1:
-            self.screen.fill((22, 29, 72))  # reset background
+            self.screen.fill((22, 29, 72))
             image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
-            self.screen.blit(image, (0, 18))  # paste banner on screen
+            self.screen.blit(image, (-96, 799))  # paste banner on screen
 
-            mx, my = pygame.mouse.get_pos()  # get mouse point
+            mx, my = pygame.mouse.get_pos()  # get mouse points
 
             self.skip_button = pygame.Rect((620, 730, 171, 65))
             self.end_button = pygame.Rect((620, 827, 171, 65))
@@ -305,10 +304,8 @@ class TetrisGame(object):
 
             #GAMEOVER
             if self.gameover:
-                '''self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
-                                % self.score)'''
-                break
-
+                self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
+                                % self.score)
             else:
                 #PAUSE
                 if self.paused:
@@ -316,22 +313,22 @@ class TetrisGame(object):
                 else:
                     #IF NOT GAMEOVER/PAUSE
                     pygame.draw.line(self.screen,
-                        (251,245,118),
-                        (self.rowlim+1, 237),
-                        (self.rowlim+1, self.height-1), (4))
+                        (255,255,255),
+                        (self.rowlim+1, 0),
+                        (self.rowlim+1, self.height-1))
                     self.disp_msg("Next:", (
-                        self.rowlim+blocksize+1,
-                        280))
+                        self.rowlim+blocksize,
+                        3))
                     self.disp_msg("\n Score: %d"
                         % (self.score),
-                        (self.rowlim+blocksize, 410))
+                        (self.rowlim+blocksize, blocksize*5))
 
-                    self.draw_matrix(self.bground_grid, (0,8))
-                    self.draw_matrix(self.board, (0,8))
+                    self.draw_matrix(self.bground_grid, (0,0))
+                    self.draw_matrix(self.board, (0,0))
                     self.draw_matrix(self.piece,
                         (self.piece_x, self.piece_y))
                     self.draw_matrix(self.next_piece,
-                        (columnnum+1.5,11))
+                        (columnnum+1,2))
             pygame.display.update()
 
             #create movements for the various key events (pause, up, down, quit, etc)
@@ -340,9 +337,7 @@ class TetrisGame(object):
                 if event.type == pygame.USEREVENT+1:
                     self.drop(False)
                 elif event.type == pygame.QUIT:
-                    #self.quit()
-                    pygame.quit()
-                    sys.exit()
+                    self.quit()
                 elif event.type == pygame.KEYDOWN:
                     for key in keyslist:
                         if event.key == eval("pygame.K_"
@@ -357,3 +352,6 @@ class TetrisGame(object):
 
 
 #then run the Tetris App in the main screen
+if __name__ == '__main__':
+    tetris = TetrisGame()
+    tetris.run()

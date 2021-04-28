@@ -23,8 +23,8 @@ class Main():
             image = pygame.image.load('resources/TetrisHomeScreen.png')  # get home screen background
             self.screen.blit(image, (0, 0))  # paste image on screen
 
-            programIcon = pygame.image.load(self.icon)
-            pygame.display.set_icon(programIcon)
+           # programIcon = pygame.image.load(self.icon)
+           # pygame.display.set_icon(programIcon)
 
             # exit game
             for event in pygame.event.get():
@@ -73,7 +73,7 @@ class Main():
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
-            self.player_button_1 = pygame.Rect((25, 727, 304, 82))
+            self.player_button_1 = pygame.Rect((25, 727, 328, 82))
             self.player_button_2 = pygame.Rect((439, 727, 328, 82))
             self.leader_button = pygame.Rect((239, 844, 328, 82))
             if self.player_button_1.collidepoint((mx, my)):  # if button clicked, go to game screen
@@ -106,7 +106,6 @@ class Main():
         self.tetris = tetrismain.TetrisGame(self)
         self.tetris.run()
         pygame.display.update()
-        self.name_screen()
 
     def name_screen(self):
         click = False
@@ -145,6 +144,7 @@ class Main():
             pygame.display.update()  # update screen
 
     def leader_screen(self):
+        click = False
         while True:
             self.screen.fill((22, 29, 72))  # reset background
             image = pygame.image.load('resources/LeaderboardBanner.png')  # get leader screen
@@ -152,7 +152,7 @@ class Main():
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
-            self.exit_button = pygame.Rect((300, 867, 196, 59))
+            self.exit_button = pygame.Rect((240, 824, 328, 82))
 
             # for some reason, this one decided to need to be different
             click = False
@@ -180,6 +180,7 @@ class Main():
             pygame.display.update()  # update screen
 
     def credit_screen(self):
+        click = False
         while True:
             self.screen.fill((22, 29, 72))  # reset background
             image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
@@ -210,7 +211,7 @@ class Main():
             home_button_image = pygame.image.load('resources/HomeButton.png')  # overlay button image
             self.screen.blit(home_button_image, (240, 766))
 
-            click = False
+
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:  # if escape pressed, exit window
