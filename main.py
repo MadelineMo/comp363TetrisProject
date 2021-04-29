@@ -154,6 +154,13 @@ class Main():
 
             pygame.display.update()  # update screen
 
+    def pushdb(self):
+        if self.player_mode == 1:
+            #push self.playername, self.tetris.score
+            pass
+        else:
+            #push self.playername, self.tetris.winscore
+            pass
 
 
     def leader_screen(self):

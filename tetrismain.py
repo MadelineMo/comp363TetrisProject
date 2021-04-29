@@ -584,8 +584,10 @@ class TetrisGame2Player(object):
                     p2score = self.score
                     if p1score > p2score:
                         self.center_msg("""Player 2: Game Over. Player 1 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a new 2 player game, press SPACE""" % (p1score, p2score))
+                        self.winscore = p1score
                     elif p2score > p1score:
                         self.center_msg("""Player 2: Game Over. Player 2 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a brand new 2 player game, press SPACE""" % (p1score, p2score))
+                        self.winscore = p2score
             else:
                 #PAUSE
                 if self.paused:
@@ -629,7 +631,7 @@ class TetrisGame2Player(object):
 
             #set the clock to tick with the maxfps given in the beginning
             clocktime.tick(maxfps)
-            
+
 #then run the Tetris App in the main screen
 if __name__ == '__main__':
     tetris = TetrisGame()
