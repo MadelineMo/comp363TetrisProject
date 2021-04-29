@@ -293,6 +293,7 @@ class TetrisGame(object):
             self.end_button = pygame.Rect((620, 827, 171, 65))
             if self.skip_button.collidepoint((mx, my)):  # if button clicked, go to game screen
                 if self.click:
+                    self.gameover = True
                     pass  # to be added in double player
             if self.end_button.collidepoint((mx, my)):  # if button clicked, go to game screen
                 if self.click:
@@ -310,8 +311,12 @@ class TetrisGame(object):
 
             #GAMEOVER
             if self.gameover:
-                self.center_msg("""Game Over. You Lost! \n\n Score: %d \n\n To start a new game, press SPACE"""
-                                % self.score)
+                self.screen.fill((22, 29, 72))
+                image = pygame.image.load('resources/GameOver.png')  # get game over banner
+                self.screen.blit(image, (0, 205))  # paste banner on screen
+                end_button = pygame.image.load('resources/EndButton.png')  # overlay button image
+                self.screen.blit(end_button, (615, 827))
+                self.center_msg("""\n\n Score: %d \n\n To start a new game, press SPACE""" % self.score)
             else:
                 #PAUSE
                 if self.paused:
@@ -568,6 +573,7 @@ class TetrisGame2Player(object):
             self.end_button = pygame.Rect((620, 827, 171, 65))
             if self.skip_button.collidepoint((mx, my)):  # if button clicked, go to game screen
                 if self.click:
+                    self.gameover = True
                     pass  # to be added in double player
             if self.end_button.collidepoint((mx, my)):  # if button clicked, go to game screen
                 if self.click:
@@ -585,17 +591,25 @@ class TetrisGame2Player(object):
 
             #GAMEOVER
             if self.gameover:
+                self.screen.fill((22, 29, 72))
                 if self.gametwo == False:
-                    self.center_msg("""Player 1: Game Over \n\n Score: %d \n\n When Player 2 is ready, press SPACE"""
-                                % self.score)
-                    p1score = self.score
+                    self.center_msg("""\n\n Score: %d \n\n When Player 2 is ready, press SPACE""" % self.score)
+                    image = pygame.image.load('resources/GameOver2.png')  # get tetris banner
+                    self.screen.blit(image, (0, 205))  # paste banner on screen
+                    end_button = pygame.image.load('resources/EndButton.png')  # overlay button image
+                    self.screen.blit(end_button, (615, 827))
                 elif self.gametwo == True:
                     p2score = self.score
+                    self.screen.fill((22, 29, 72))
+                    image = pygame.image.load('resources/GameOver3.png')  # get tetris banner
+                    self.screen.blit(image, (0, 205))  # paste banner on screen
+                    end_button = pygame.image.load('resources/EndButton.png')  # overlay button image
+                    self.screen.blit(end_button, (615, 827))
                     if p1score > p2score:
-                        self.center_msg("""Player 2: Game Over. Player 1 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a new 2 player game, press SPACE""" % (p1score, p2score))
+                        self.center_msg("""\n\nPlayer 1 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a new 2 player game, press SPACE""" % (p1score, p2score))
                         self.winscore = p1score
                     elif p2score > p1score:
-                        self.center_msg("""Player 2: Game Over. Player 2 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a brand new 2 player game, press SPACE""" % (p1score, p2score))
+                        self.center_msg("""\n\nPlayer 2 Wins! \n\nP1 Score: %d \nP2 Score: %d\n\n To start a brand new 2 player game, press SPACE""" % (p1score, p2score))
                         self.winscore = p2score
             else:
                 #PAUSE
