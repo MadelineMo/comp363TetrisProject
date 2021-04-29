@@ -238,10 +238,10 @@ class Main():
     def leader_screen(self):
         click = False
         self.getdata(self.conn)
-        if len(self.names) < 8:
+        if len(self.names) < 6:
             ranks = len(self.names)
         else:
-            ranks = 7
+            ranks = 6
 
         myfont = pygame.font.Font('resources/VT323.ttf', 100)
         myfont2 = pygame.font.Font('resources/VT323.ttf', 70)
@@ -284,7 +284,7 @@ class Main():
             self.screen.blit(scorelabel,(305,400))
 
 
-            if ranks > 5:
+            if ranks > 6:
                 start = 480
                 for x in range(1,6):
                     numrank = myfont2.render(str(x), True, (143,167,255), None)
