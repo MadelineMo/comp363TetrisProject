@@ -107,12 +107,18 @@ class TetrisGame(object):
         pygame.event.set_blocked(pygame.MOUSEMOTION)
         #when choosing the piece, make it a random choice
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece2 = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece3 = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece4 = tetris_shapes[rand(len(tetris_shapes))]
         self.init_game()
 
     #create a definition to setup a new piece
     def new_piece(self):
         self.piece = self.next_piece[:]
-        self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece = self.next_piece2
+        self.next_piece2 = self.next_piece3
+        self.next_piece3 = self.next_piece4
+        self.next_piece4 = tetris_shapes[rand(len(tetris_shapes))]
         self.piece_x = int(columnnum / 2 - len(self.piece[0])/2)
         self.piece_y = 0
 
@@ -369,18 +375,24 @@ class TetrisGame2Player(object):
 
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.event.set_blocked(pygame.MOUSEMOTION)
-        #when choosing the piece, make it a random choice
+        # when choosing the piece, make it a random choice
         self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece2 = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece3 = tetris_shapes[rand(len(tetris_shapes))]
+        self.next_piece4 = tetris_shapes[rand(len(tetris_shapes))]
         self.gametwo = False
         self.init_game()
 
-    #create a definition to setup a new piece
+        # create a definition to setup a new piece
+
     def new_piece(self):
         self.piece = self.next_piece[:]
-        self.next_piece = tetris_shapes[rand(len(tetris_shapes))]
-        self.piece_x = int(columnnum / 2 - len(self.piece[0])/2)
+        self.next_piece = self.next_piece2
+        self.next_piece2 = self.next_piece3
+        self.next_piece3 = self.next_piece4
+        self.next_piece4 = tetris_shapes[rand(len(tetris_shapes))]
+        self.piece_x = int(columnnum / 2 - len(self.piece[0]) / 2)
         self.piece_y = 0
-
         if check_collision(self.board,
                            self.piece,
                            (self.piece_x, self.piece_y)):
@@ -598,19 +610,16 @@ class TetrisGame2Player(object):
                         (255,255,255),
                         (self.rowlim+1, 0),
                         (self.rowlim+1, self.height-1))
-                    self.disp_msg("Next:", (
-                        self.rowlim+blocksize,
-                        3))
-                    self.disp_msg("\n Score: %d"
-                        % (self.score),
-                        (self.rowlim+blocksize, blocksize*5))
+                    self.disp_msg("Next:", (self.rowlim+blocksize,3))
+                    self.disp_msg("\n Score: %d" % self.score, (self.rowlim+blocksize, blocksize*21))
 
                     self.draw_matrix(self.bground_grid, (0,0))
                     self.draw_matrix(self.board, (0,0))
-                    self.draw_matrix(self.piece,
-                        (self.piece_x, self.piece_y))
-                    self.draw_matrix(self.next_piece,
-                        (columnnum+1,2))
+                    self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
+                    self.draw_matrix(self.next_piece, (columnnum+1, 2))
+                    self.draw_matrix(self.next_piece2, (columnnum + 1, 5))
+                    self.draw_matrix(self.next_piece3, (columnnum + 1, 8))
+                    self.draw_matrix(self.next_piece4, (columnnum + 1, 11))
             pygame.display.update()
 
             #create movements for the various key events (pause, up, down, quit, etc)
