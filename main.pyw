@@ -1,7 +1,10 @@
 import pygame
 import sys
 from pygame.locals import *
+import pygame_textinput
 import tetrismain
+import sqlite3
+from sqlite3 import Error
 
 class Main():
 
@@ -12,6 +15,17 @@ class Main():
         self.icon = "resources/icon.png"
         self.tetris = tetrismain.TetrisGame(self)
         self.player_mode = 0
+        self.conn = self.create_connection(r"resources\tetris.db")
+
+        if self.conn is not None:
+            maketable = """CREATE TABLE IF NOT EXISTS players (
+                                                score integer NOT NULL,
+                                                name text NOT NULL,
+                                                PRIMARY KEY(name)
+                                            );"""
+            self.create_table(self.conn, maketable)
+        else:
+            print("error, can't create the database!")
 
         self.change_music(self.song)
         self.home_screen()
@@ -23,8 +37,8 @@ class Main():
             image = pygame.image.load('resources/TetrisHomeScreen.png')  # get home screen background
             self.screen.blit(image, (0, 0))  # paste image on screen
 
-           # programIcon = pygame.image.load(self.icon)
-           # pygame.display.set_icon(programIcon)
+            programIcon = pygame.image.load(self.icon)
+            pygame.display.set_icon(programIcon)
 
             # exit game
             for event in pygame.event.get():
@@ -112,6 +126,7 @@ class Main():
 
     def name_screen(self):
         click = False
+        self.textbox = pygame_textinput.TextInput("Enter name here!", "resources/VT323.ttf", 35, True, "white", "white")
         while True:
             self.screen.fill((22, 29, 72))  # reset background
             image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
@@ -126,6 +141,7 @@ class Main():
             self.submit_button = pygame.Rect((258, 735, 328, 82))
             if self.submit_button.collidepoint((mx, my)):  # if button clicked, go to leader screen
                 if click:
+                    self.pushdb()
                     self.leader_screen()
 
             pygame.draw.rect(self.screen, (22, 29, 72), self.submit_button)
@@ -133,7 +149,11 @@ class Main():
             self.button = pygame.image.load('resources/SubmitButton.png')  # overlay button image
             self.screen.blit(self.button, (240, 750))
 
-            for event in pygame.event.get():
+            pygame.draw.rect(self.screen, (4, 10, 38), pygame.Rect(258, 650, 328, 45))
+            self.screen.blit(self.textbox.get_surface(), (263, 650))
+
+            events = pygame.event.get()
+            for event in events:
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:  # if escape pressed, exit window
                         pygame.quit()
@@ -144,10 +164,59 @@ class Main():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
+            if self.textbox.update(events):
+                print(self.textbox.get_text())
+            self.playerName = self.textbox.get_text()
             pygame.display.update()  # update screen
 
+    def pushdb(self):
+        if self.player_mode == 1:
+            try:
+                sql = f''' INSERT INTO players(score, name)
+                   VALUES(?,?)'''
+                task = (self.playerName, self.tetris.score)
+                cur = self.conn.cursor()
+                cur.execute(sql, task)
+                self.conn.commit()
+            except:
+                print("push not successful")
+        else:
+            # push self.playername, self.tetris.winscore
+            try:
+                sql = f''' INSERT INTO players(score, name)
+                   VALUES(?,?)'''
+                task = (self.playerName, self.tetris.winscore)
+                cur = self.conn.cursor()
+                cur.execute(sql, task)
+                self.conn.commit()
+            except:
+                print("push not successful")
+
+    def create_connection(self, db_file):
+        """ create a database connection to a SQLite database """
+        conn = None
+        try:
+            conn = sqlite3.connect(db_file)
+            print(sqlite3.version)
+            return conn
+        except Error as e:
+            print(e)
+        return conn
+
+    def create_table(self, conn, create_table_sql):
+        """ create a table from the create_table_sql statement
+        :param conn: Connection object
+        :param create_table_sql: a CREATE TABLE statement
+        :return:
+        """
+        try:
+            c = conn.cursor()
+            c.execute(create_table_sql)
+        except Error as e:
+            print(e)
+            print("error, database wasn't created")
+
     def leader_screen(self):
-        click = False
         while True:
             self.screen.fill((22, 29, 72))  # reset background
             image = pygame.image.load('resources/LeaderboardBanner.png')  # get leader screen

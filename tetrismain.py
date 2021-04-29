@@ -145,7 +145,7 @@ class TetrisGame(object):
                     line,
                     False,
                     (255,255,255),
-                    (0,0,0)),
+                    (22, 29, 72)),
                 (x,y))
             y+=14
 
@@ -153,7 +153,7 @@ class TetrisGame(object):
     def center_msg(self, message):
         for i, line in enumerate(message.splitlines()):
             messageimage =  self.default_font.render(line, False,
-                (255,255,255), (0,0,0))
+                (255,255,255), (22, 29, 72))
 
             messagecenter_x, messagecenter_y = messageimage.get_size()
             messagecenter_x //= 2
@@ -322,19 +322,16 @@ class TetrisGame(object):
                         (255,255,255),
                         (self.rowlim+1, 0),
                         (self.rowlim+1, self.height-1))
-                    self.disp_msg("Next:", (
-                        self.rowlim+blocksize,
-                        3))
-                    self.disp_msg("\n Score: %d"
-                        % (self.score),
-                        (self.rowlim+blocksize, blocksize*5))
+                    self.disp_msg("Next:", (self.rowlim+blocksize, 3))
+                    self.disp_msg("\n Score: %d" % (self.score), (self.rowlim+blocksize, blocksize*21))
 
                     self.draw_matrix(self.bground_grid, (0,0))
                     self.draw_matrix(self.board, (0,0))
-                    self.draw_matrix(self.piece,
-                        (self.piece_x, self.piece_y))
-                    self.draw_matrix(self.next_piece,
-                        (columnnum+1,2))
+                    self.draw_matrix(self.piece, (self.piece_x, self.piece_y))
+                    self.draw_matrix(self.next_piece, (columnnum + 1, 2))
+                    self.draw_matrix(self.next_piece2, (columnnum + 1, 5))
+                    self.draw_matrix(self.next_piece3, (columnnum + 1, 8))
+                    self.draw_matrix(self.next_piece4, (columnnum + 1, 11))
             pygame.display.update()
 
             #create movements for the various key events (pause, up, down, quit, etc)
@@ -416,7 +413,7 @@ class TetrisGame2Player(object):
                     line,
                     False,
                     (255,255,255),
-                    (0,0,0)),
+                    (22, 29, 72)),
                 (x,y))
             y+=14
 
@@ -424,7 +421,7 @@ class TetrisGame2Player(object):
     def center_msg(self, message):
         for i, line in enumerate(message.splitlines()):
             messageimage =  self.default_font.render(line, False,
-                (255,255,255), (0,0,0))
+                (255,255,255), (22, 29, 72))
 
             messagecenter_x, messagecenter_y = messageimage.get_size()
             messagecenter_x //= 2
