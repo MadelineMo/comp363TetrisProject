@@ -236,6 +236,7 @@ class Main():
 
 
     def leader_screen(self):
+        click = False
         self.getdata(self.conn)
         if len(self.names) < 8:
             ranks = len(self.names)
@@ -333,11 +334,7 @@ class Main():
 
 
             self.button = pygame.image.load('resources/ExitButton.png')  # overlay button image
-<<<<<<< HEAD
             self.screen.blit(self.button, (240, 840))
-=======
-            self.screen.blit(self.button, (240, 824))
->>>>>>> 266a2c2b6c0c2f6582c06ecef6ca851216c690c2
 
             pygame.display.update()  # update screen
 
