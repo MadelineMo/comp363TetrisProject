@@ -16,12 +16,12 @@ class Main():
         self.tetris = tetrismain.TetrisGame(self)
         self.player_mode = 0
         self.conn = self.create_connection(r"resources\tetris.db")
+        self.names = []
 
         if self.conn is not None:
             maketable = """CREATE TABLE IF NOT EXISTS players (
                                         score integer NOT NULL,
-                                        name text NOT NULL,
-                                        PRIMARY KEY(name)
+                                        name text NOT NULL
                                     );"""
             self.create_table(self.conn, maketable)
         else:
@@ -126,7 +126,7 @@ class Main():
 
     def name_screen(self):
         click = False
-        self.textbox = pygame_textinput.TextInput("Enter name here!", "resources/VT323.ttf", 35, True, "white", "white")
+        self.textbox = pygame_textinput.TextInput("", "resources/VT323.ttf", 35, True, "white", "white", 400, 35, 10)
         while True:
             image = pygame.image.load('resources/TetrisNameScreen.png')  # name screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
@@ -147,6 +147,11 @@ class Main():
             self.button = pygame.transform.scale(self.button, (328, 82))
             self.screen.blit(self.button, (258, 735))
 
+            myfont = pygame.font.Font('resources/VT323.ttf', 60)
+            label = myfont.render("Winning player, enter name", True, "white", None)
+            self.screen.blit(label,(95, 400))
+            label = myfont.render("below!", True, "white", None)
+            self.screen.blit(label,(350, 470))
             pygame.draw.rect(self.screen, (4,10,38), pygame.Rect(258, 650, 328, 45))
             self.screen.blit(self.textbox.get_surface(), (263, 650))
 
@@ -214,8 +219,26 @@ class Main():
             print(e)
             print("error, database wasn't created")
 
+    def getdata(self, conn):
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM players")
+
+        rows = cur.fetchall()
+
+        for row in rows:
+            self.names.append(row)
+
+
 
     def leader_screen(self):
+        self.getdata(self.conn)
+        if len(self.names) < 8:
+            ranks = len(self.names)
+        else:
+            ranks = 7
+
+        myfont = pygame.font.Font('resources/VT323.ttf', 100)
+        myfont2 = pygame.font.Font('resources/VT323.ttf', 70)
         while True:
             image = pygame.image.load('resources/TetrisLeaderboardScreen.png')  # get leader screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
@@ -245,6 +268,65 @@ class Main():
 
             pygame.draw.rect(self.screen, (22, 29, 72), self.exit_button)  # draw exit button
 
+            namelabel = myfont.render('NAME', True, "white", None)
+            self.screen.blit(namelabel,(595,400))
+
+            ranklabel = myfont.render('RANK', True, "white", None)
+            self.screen.blit(ranklabel,(50,400))
+
+            scorelabel = myfont.render('SCORE', True, "white", None)
+            self.screen.blit(scorelabel,(305,400))
+
+
+            if ranks > 5:
+                start = 480
+                for x in range(1,6):
+                    numrank = myfont2.render(str(x), True, (143,167,255), None)
+                    self.screen.blit(numrank,(110,start))
+                    start+=75
+            else:
+                start = 480
+                for x in range(1,ranks):
+                    numrank = myfont2.render(str(x), True, (143,167,255), None)
+                    self.screen.blit(numrank,(110,start))
+                    start+=75
+                if ranks < 6:
+                    iter = 6 - ranks
+                    for x in range (0, iter):
+                        dashrank = myfont2.render("-", True, (143,167,255), None)
+                        self.screen.blit(dashrank,(110,start))
+                        start+=75
+
+            if len(self.names) > 6:
+                start = 480
+                for x in range(1,6):
+                    z = self.names[x][0]
+                    y = self.names[x][1]
+                    numrank = myfont2.render(str(z), True, (143,167,255), None)
+                    self.screen.blit(numrank,(600,start))
+                    numrank2 = myfont2.render(str(y), True, (143,167,255), None)
+                    self.screen.blit(numrank2,(380,start))
+                    start+=75
+            else:
+                start = 480
+                length = len(self.names)
+                for x in range(1, length):
+                    z = self.names[x][0]
+                    y = self.names[x][1]
+                    numrank = myfont2.render(str(z), True, (143,167,255), None)
+                    self.screen.blit(numrank,(600,start))
+                    numrank2 = myfont2.render(str(y), True, (143,167,255), None)
+                    self.screen.blit(numrank2,(380,start))
+                    start+=75
+                if length < 6:
+                    iter = 6 - length
+                    for x in range (0, iter):
+                        dashrank = myfont2.render("---", True, (143,167,255), None)
+                        self.screen.blit(dashrank,(620,start))
+                        self.screen.blit(dashrank,(360,start))
+                        start+=75
+
+
             self.button = pygame.image.load('resources/ExitButton.png')  # overlay button image
             self.button = pygame.transform.scale(self.button, (196, 59))
             self.screen.blit(self.button, (300, 867))
@@ -262,7 +344,7 @@ class Main():
             image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
             self.screen.blit(image, (30, 170))
             image = pygame.image.load('resources/CreditsText.png')  # credits
-            self.screen.blit(image, (37.5, 190))
+            self.screen.blit(image, (150, 190))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -278,6 +360,7 @@ class Main():
 
             pygame.draw.rect(self.screen, (22, 29, 72), self.rematch_button)  # draw rematch button
             pygame.draw.rect(self.screen, (22, 29, 72), self.home_button)  # draw player one button
+
 
             rematch_button_image = pygame.image.load('resources/RematchButton.png')  # overlay button image
             self.screen.blit(rematch_button_image, (240, 652))
