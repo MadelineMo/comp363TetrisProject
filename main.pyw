@@ -191,7 +191,7 @@ class Main():
             image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
             self.screen.blit(image, (30, 170))
             image = pygame.image.load('resources/CreditsText.png')  # credits
-            self.screen.blit(image, (37.5, 190))
+            self.screen.blit(image, (150, 190))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
