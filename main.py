@@ -1,6 +1,7 @@
 import pygame
 import sys
 from pygame.locals import *
+import pygame_textinput
 import tetrismain
 
 class Main():
@@ -109,6 +110,7 @@ class Main():
 
     def name_screen(self):
         click = False
+        self.textbox = pygame_textinput.TextInput("Enter name here!", "VT323.ttf", 35, True, "white", "white")
         while True:
             image = pygame.image.load('resources/TetrisNameScreen.png')  # name screen (out of order version)
             image = pygame.transform.scale(image, (800, 951))  # resize image
@@ -121,13 +123,18 @@ class Main():
                 if click:
                     self.leader_screen()
 
+
             pygame.draw.rect(self.screen, (22, 29, 72), self.submit_button)
 
             self.button = pygame.image.load('resources/SubmitButton.png')  # overlay button image
             self.button = pygame.transform.scale(self.button, (328, 82))
             self.screen.blit(self.button, (258, 735))
 
-            for event in pygame.event.get():
+            pygame.draw.rect(self.screen, (4,10,38), pygame.Rect(258, 650, 328, 45))
+            self.screen.blit(self.textbox.get_surface(), (263, 650))
+
+            events = pygame.event.get()
+            for event in events:
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:  # if escape pressed, exit window
                         pygame.quit()
@@ -138,7 +145,12 @@ class Main():
                 if event.type == QUIT:
                     pygame.quit()
                     sys.exit()
+            if self.textbox.update(events):
+                print(self.textbox.get_text())
+            self.playerName = self.textbox.get_text()
+
             pygame.display.update()  # update screen
+
 
 
     def leader_screen(self):
@@ -180,10 +192,15 @@ class Main():
 
 
     def credit_screen(self):
+        click = False
         while True:
-            image = pygame.image.load('resources/TetrisCreditsScreen.png')  # get home screen background
-            image = pygame.transform.scale(image, (800, 951))  # resize image
-            self.screen.blit(image, (0, 0))  # paste image on screen
+            self.screen.fill((22, 29, 72))  # reset background
+            image = pygame.image.load('resources/TetrisBanner.png')  # get tetris banner
+            self.screen.blit(image, (0, 18))  # paste banner on screen
+            image = pygame.image.load('resources/RainbowBoarder.png')  # get rainbow boarder
+            self.screen.blit(image, (30, 170))
+            image = pygame.image.load('resources/CreditsText.png')  # credits
+            self.screen.blit(image, (37.5, 190))
 
             mx, my = pygame.mouse.get_pos()  # get mouse point
 
@@ -201,14 +218,12 @@ class Main():
             pygame.draw.rect(self.screen, (22, 29, 72), self.home_button)  # draw player one button
 
             rematch_button_image = pygame.image.load('resources/RematchButton.png')  # overlay button image
-            rematch_button_image = pygame.transform.scale(rematch_button_image, (328, 82))
-            self.screen.blit(rematch_button_image, (233, 665))
+            self.screen.blit(rematch_button_image, (240, 652))
 
             home_button_image = pygame.image.load('resources/HomeButton.png')  # overlay button image
-            home_button_image = pygame.transform.scale(home_button_image, (328, 82))
-            self.screen.blit(home_button_image, (236, 777))
+            self.screen.blit(home_button_image, (240, 766))
 
-            click = False
+
             for event in pygame.event.get():
                 if event.type == KEYDOWN:
                     if event.key == K_ESCAPE:  # if escape pressed, exit window
@@ -221,6 +236,6 @@ class Main():
                     pygame.quit()
                     sys.exit()
 
-            pygame.display.update()  # update screen
+            pygame.display.update()
 
 Main()
